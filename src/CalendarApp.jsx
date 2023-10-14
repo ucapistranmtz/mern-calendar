@@ -1,7 +1,13 @@
 import React from 'react'
+import { AppRouter } from './router'
+import { BrowserRouter } from 'react-router-dom'
 
 export const CalendarApp = () => {
   return (
-    <h1>CalendarApp</h1>
+   <>
+   <BrowserRouter>
+      <AppRouter/>
+   </BrowserRouter> 
+   </>
   )
 }
