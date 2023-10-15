@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react'
 import enUS from 'date-fns/locale/en-US'
-import { Navbar,CalendarEvent } from '../'
+import { Navbar,CalendarEvent,CalendarModal } from '../'
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
 import { addHours, format, parse, startOfWeek, getDay } from 'date-fns'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
@@ -77,6 +77,7 @@ export const CalendarPage = () => {
         onView={onViewChange}
 
       />
+      <CalendarModal/>
     </>
   )
 }
