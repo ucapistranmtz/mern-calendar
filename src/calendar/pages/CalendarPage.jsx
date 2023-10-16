@@ -10,29 +10,15 @@ import { addHours, format, parse, startOfWeek, getDay } from 'date-fns'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 
 import { getMessagesES, localizer } from '../../helpers'
-import { useUiStore } from '../../hooks'
-
-
-const locales = {
-  'en-US': enUS,
-}
+import { useUiStore, useCalendarStore, } from '../../hooks'
 
 
 
-const events = [{
-
-  title: 'birthday',
-  start: new Date(),
-  end: addHours(new Date(), 2),
-  bgColor: '#fafa',
-  user: {
-    _id: '1231',
-    name: 'Ulises'
-  }
-}]
+ 
 export const CalendarPage = () => {
 
-  const { openDateModal, onCloseDateModal } = useUiStore()
+  const { openDateModal, onCloseDateModal } = useUiStore();
+  const { events, setActiveEvent } = useCalendarStore();
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
   const eventStyleGetter = (event, stsart, end, isSelected) => {
@@ -49,12 +35,13 @@ export const CalendarPage = () => {
 
 
   const onDoubleClick = (event) => {
-    console.log({ onDoubleClick: event })
-   openDateModal();
+  //  console.log({ onDoubleClick: event })
+    openDateModal();
   }
 
   const onSelect = (event) => {
     console.log({ onSelect: event })
+    setActiveEvent(event);
   }
 
   const onViewChange = (event) => {
@@ -67,13 +54,13 @@ export const CalendarPage = () => {
       <Navbar />
       <Calendar
         defaultView={lastView}
-        culture='es'
+        //culture='en'
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
         style={{ height: 'calc(100vh - 80px)' }}
-        messages={getMessagesES()}
+       // messages={getMessagesES()}
         eventPropGetter={eventStyleGetter}
         components={{
           event: CalendarEvent

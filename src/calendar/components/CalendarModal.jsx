@@ -1,8 +1,8 @@
 import Modal from 'react-modal';
 import DatePicker, { registerLocale } from "react-datepicker";
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { addHours, differenceInSeconds } from 'date-fns';
-import { useUiStore} from '../../hooks'
+import { useCalendarStore, useUiStore } from '../../hooks'
 
 import "react-datepicker/dist/react-datepicker.css";
 import es from 'date-fns/locale/es';
@@ -24,13 +24,13 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
-    const { isDateModalOpen,closeDateModal} = useUiStore()
+    const { isDateModalOpen, closeDateModal } = useUiStore()
 
-    
+
 
     const [formSubmitted, setFormsubmitted] = useState(false);
 
-
+    const { activeEvent } = useCalendarStore()
 
     const [formValues, setFormValues] = useState({
         title: 'ulises',
@@ -50,6 +50,15 @@ export const CalendarModal = () => {
             : 'is-invalid'
 
     }, [formValues.title, formSubmitted])
+
+    useEffect(() => {
+
+        if (activeEvent !== null) 
+        setFormValues({ ...activeEvent })
+
+    }, [activeEvent])
+
+
 
 
     const onInputchange = ({ target }) => {
