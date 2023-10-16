@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react'
 import enUS from 'date-fns/locale/en-US'
-import { Navbar, CalendarEvent, CalendarModal } from '../'
+import { Navbar, CalendarEvent, CalendarModal, FabAddNew } from '../'
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
 import { addHours, format, parse, startOfWeek, getDay } from 'date-fns'
 
@@ -71,6 +71,7 @@ export const CalendarPage = () => {
 
       />
       <CalendarModal />
+      <FabAddNew/>
     </>
   )
 }
