@@ -33,8 +33,8 @@ export const CalendarModal = () => {
     const { activeEvent } = useCalendarStore()
 
     const [formValues, setFormValues] = useState({
-        title: 'ulises',
-        notes: 'Capistran',
+        title: '',
+        notes: '',
         start: new Date(),
         end: addHours(new Date(), 2)
     })
@@ -53,8 +53,8 @@ export const CalendarModal = () => {
 
     useEffect(() => {
 
-        if (activeEvent !== null) 
-        setFormValues({ ...activeEvent })
+        if (activeEvent !== null)
+            setFormValues({ ...activeEvent })
 
     }, [activeEvent])
 
