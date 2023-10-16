@@ -30,7 +30,7 @@ export const CalendarModal = () => {
 
     const [formSubmitted, setFormsubmitted] = useState(false);
 
-    const { activeEvent } = useCalendarStore()
+    const { activeEvent,startSavingEvent } = useCalendarStore()
 
     const [formValues, setFormValues] = useState({
         title: '',
@@ -74,7 +74,7 @@ export const CalendarModal = () => {
         setFormValues({ ...formValues, [changing]: event })
     }
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault();
         setFormsubmitted(true);
 
@@ -89,8 +89,10 @@ export const CalendarModal = () => {
         console.log(formValues)
 
         //TODO;
-        //remove screen errors
-        //close modal
+        await startSavingEvent(formValues);
+        closeDateModal()
+        setFormsubmitted(false)
+       
     }
 
     return (
