@@ -1,5 +1,17 @@
 # React + Vite
 
+# Calendar App
+
+ ## Development steps
+
+1.  Rename .env.template with .env
+2.  change the variable values with yours
+
+ ```
+ VITE_API_URL=http://localhost:4000/api
+ ```
+
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
