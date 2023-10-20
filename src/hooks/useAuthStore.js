@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { calendarApi } from "../api";
-import {  onChecking,onLogin,onLogout, clearErrorMessage} from '../store'
+import { onChecking, onLogin, onLogout, clearErrorMessage } from '../store'
 
 export const useAuthStore = () => {
 
@@ -17,35 +17,57 @@ export const useAuthStore = () => {
 
             localStorage.setItem('token', data.token);
             localStorage.setItem('token-init-date', new Date().getTime());
-            dispatch(onLogin({name:data.name,uid:data.uid}))
+            dispatch(onLogin({ name: data.name, uid: data.uid }))
 
 
         } catch (error) {
             dispatch(onLogout('Invalid Credentials'));
-            setTimeout(()=> {
+            setTimeout(() => {
                 dispatch(clearErrorMessage())
-            },10)
+            }, 10)
         }
     }
 
-    const startRegister = async({ email, password, name }) => {
-        dispatch( onChecking() );
-        try {   
+    const startRegister = async ({ email, password, name }) => {
+        dispatch(onChecking());
+        try {
 
-        
-            const { data } = await calendarApi.post('/auth/new',{ email, password, name });
-            localStorage.setItem('token', data.token );
-            localStorage.setItem('token-init-date', new Date().getTime() );
-            dispatch( onLogin({ name: data.name, uid: data.uid }) );
-            
+
+            const { data } = await calendarApi.post('/auth/new', { email, password, name });
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('token-init-date', new Date().getTime());
+            dispatch(onLogin({ name: data.name, uid: data.uid }));
+
         } catch (error) {
             //console.error(error)
-            dispatch( onLogout( error.response.data?.msg || '--' ) );
+            dispatch(onLogout(error.response.data?.msg || '--'));
             setTimeout(() => {
-                dispatch( clearErrorMessage() );
+                dispatch(clearErrorMessage());
             }, 10);
         }
     }
+
+
+    const checkauthToken = async () => {
+
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            return dispatch(onLogout());
+        }
+
+        try {
+
+            const { data } = calendarApi.get('auth/renew');
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('token-init-date', new Date().getTime());
+            dispatch(onLogin({ name: data.name, uid: data.uid }))
+        } catch (error) {
+            localStorage.clear();
+            dispatch(onLogout());
+        }
+    }
+
 
     return {
         //*properties
@@ -55,6 +77,7 @@ export const useAuthStore = () => {
 
         //*methods
         startLogin,
-        startRegister
+        startRegister,
+        checkauthToken
     }
 }
