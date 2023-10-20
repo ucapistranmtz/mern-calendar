@@ -7,11 +7,11 @@ import { useAuthStore } from '../hooks'
 export const AppRouter = () => {
 
 
-  const { status, checkauthToken } = useAuthStore();
+  const { status, checkAuthToken } = useAuthStore();
   //const authStatus = 'not-authenticated'
 
   useEffect(() => {
-    checkauthToken();
+    checkAuthToken();
   }, [])
 
 
@@ -28,8 +28,18 @@ export const AppRouter = () => {
       {
 
         (status === 'not-authenticated')
-          ? <Route path='/auth/*' element={<LoginPage />} />
-          : <Route path='/*' element={<CalendarPage />} />
+          ? (
+            <>
+            <Route path='/auth/*' element={<LoginPage />} />
+            <Route path='/*' element={<Navigate to='/auth/login' />} />
+            </>
+          )
+          : (
+            <>
+               <Route path='/auth/*' element={<CalendarPage />} />
+            <Route path='/*' element={<Navigate to='/' />} />
+            </>
+          )
       }
 
 

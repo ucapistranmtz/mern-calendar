@@ -48,7 +48,7 @@ export const useAuthStore = () => {
     }
 
 
-    const checkauthToken = async () => {
+    const checkAuthToken = async () => {
 
         const token = localStorage.getItem('token');
 
@@ -78,6 +78,6 @@ export const useAuthStore = () => {
         //*methods
         startLogin,
         startRegister,
-        checkauthToken
+        checkAuthToken
     }
 }
