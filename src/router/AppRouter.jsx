@@ -36,7 +36,7 @@ export const AppRouter = () => {
           )
           : (
             <>
-               <Route path='/auth/*' element={<CalendarPage />} />
+               <Route path='/' element={<CalendarPage />} />
             <Route path='/*' element={<Navigate to='/' />} />
             </>
           )
