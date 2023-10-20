@@ -18,24 +18,31 @@ const registerFormfields = {
 }
 
 export const LoginPage = () => {
-  const {startLogin, errorMessage}= useAuthStore();
+  const {startLogin, errorMessage,startRegister}= useAuthStore();
   const { loginEmail, loginPassword, onInputChange: onLoginInputchange } = useForm(loginFormFields)
-  const { registerEmail, registerPassword, registerPasswordConfirm, onInputChange: onRegisterInputchange } = useForm(registerFormfields)
+  const { registerName, registerEmail, registerPassword, registerPasswordConfirm, onInputChange: onRegisterInputchange } = useForm(registerFormfields)
 
   const loginSubmit = (event) => {
     event.preventDefault();
     startLogin({ email:loginEmail, password:loginPassword });
   }
 
-  const registerSubmit = (event) => {
+  const registerSubmit = ( event ) => {
+    console.log('registerSubmit event',event)
     event.preventDefault();
-   // console.log({ loginEmail, loginPassword });
-  }
+    if ( registerPassword !== registerPasswordConfirm ) {
+        Swal.fire('Error en registro', 'Contraseñas no son iguales', 'error');
+        return;
+    }
+
+    startRegister({ name: registerName, email: registerEmail, password: registerPassword });
+}
+
 
 
 
    useEffect(() => {
-      if (!errorMessage){
+      if (errorMessage!==undefined){
         Swal.fire('authentication error',errorMessage,'error');
       }   
    }, [errorMessage])
@@ -81,13 +88,16 @@ export const LoginPage = () => {
         </div>
 
         <div className="col-md-6 login-form-2">
-          <h3>Registro</h3>
+          <h3>Register</h3>
           <form onSubmit={registerSubmit}>
             <div className="form-group mb-2">
               <input
                 type="text"
                 className="form-control"
                 placeholder="Name"
+                name="registerName"
+                value={registerName}
+                onChange={onRegisterInputchange}
               />
             </div>
             <div className="form-group mb-2">
