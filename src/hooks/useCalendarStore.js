@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { onAddNewEvent, onDeleteEvent, onSetActiveEvent, onUpdateEvent } from "../store/calendar/calendarSlice";
+import { calendarApi } from "../api";
 
 
 
@@ -9,6 +10,7 @@ export const useCalendarStore = () => {
 
     const dispatch = useDispatch()
     const { events, activeEvent } = useSelector(state => state.calendar);
+    const { user } = useSelector(state => state.auth)
 
 
     const setActiveEvent = (calendarEvent) => {
@@ -26,8 +28,9 @@ export const useCalendarStore = () => {
             dispatch(onUpdateEvent({ ...calendarEvent }))
         } else {
             // new 
-
-            dispatch(onAddNewEvent({ ...calendarEvent, _id: new Date().getTime() }))
+            const { data } = await calendarApi.post('/events', calendarEvent);
+            console.log('new event', data)
+            dispatch(onAddNewEvent({ ...calendarEvent, _id: data.event.id, user  }))
         }
 
     }
