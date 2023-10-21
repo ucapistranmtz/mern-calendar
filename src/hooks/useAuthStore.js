@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { calendarApi } from "../api";
-import { onChecking, onLogin, onLogout, clearErrorMessage } from '../store'
+import { onChecking, onLogin, onLogout, clearErrorMessage, onLogoutCalendar } from '../store'
 
 export const useAuthStore = () => {
 
@@ -70,13 +70,12 @@ export const useAuthStore = () => {
     }
 
 
-    const startLogOut = () => {
-
+    const startLogout = () => {
         localStorage.clear();
-        //dispatch(onLogoutCalendar() );
-        dispatch(onLogout());
+        dispatch( onLogoutCalendar() );
+        dispatch( onLogout() );
     }
-
+   
  
 
 
@@ -90,7 +89,7 @@ export const useAuthStore = () => {
         startLogin,
         startRegister,
         checkAuthToken,
-        startLogOut
+        startLogout
         
     }
 }

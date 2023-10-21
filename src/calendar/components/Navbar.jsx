@@ -4,7 +4,7 @@ import { useAuthStore } from '../../hooks'
 export const Navbar = () => {
 
 
-    const { startLogOut, user } = useAuthStore();
+    const {  startLogout, user } = useAuthStore();
 
 
     return (
@@ -16,7 +16,7 @@ export const Navbar = () => {
                 {user.name}
             </span>
             <button className='btn btn-outline-danger'
-                onClick={startLogOut}
+                onClick={startLogout}
             >
                 <i className='fas fa-sign-out-alt'></i>
                 &nbsp;
