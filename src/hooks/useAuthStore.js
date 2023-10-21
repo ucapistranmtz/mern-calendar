@@ -21,6 +21,7 @@ export const useAuthStore = () => {
 
 
         } catch (error) {
+            console.error('startLogin',error)
             dispatch(onLogout('Invalid Credentials'));
             setTimeout(() => {
                 dispatch(clearErrorMessage())
