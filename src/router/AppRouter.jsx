@@ -1,50 +1,47 @@
-import React, { useEffect } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import { LoginPage } from '../auth'
-import { CalendarPage } from '../calendar'
-import { useAuthStore } from '../hooks'
+import { useEffect } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+
+import { LoginPage } from '../auth';
+import { CalendarPage } from '../calendar';
+import { useAuthStore } from '../hooks';
+
 
 export const AppRouter = () => {
 
+    const { status, checkAuthToken } = useAuthStore();
+    // const authStatus = 'not-authenticated'; // 'authenticated'; // 'not-authenticated';
 
-  const { status, checkAuthToken } = useAuthStore();
-  //const authStatus = 'not-authenticated'
-
-  useEffect(() => {
-    checkAuthToken();
-  }, [])
+    useEffect(() => {
+        checkAuthToken();
+    }, [])
+    
 
 
-  if (status === 'checking') {
+    if ( status === 'checking' ) {
+        return (
+            <h3>Cargando...</h3>
+        )
+    }
 
+    
     return (
+        <Routes>
+            {
+                ( status === 'not-authenticated')  
+                    ? (
+                        <>
+                            <Route path="/auth/*" element={ <LoginPage /> } />
+                            <Route path="/*" element={ <Navigate to="/auth/login" /> } />
+                        </>
+                    )
+                    : (
+                        <>
+                            <Route path="/" element={ <CalendarPage /> } />
+                            <Route path="/*" element={ <Navigate to="/" /> } />
+                        </>
+                    )
+            }
 
-      <h3>Loading</h3>
+        </Routes>
     )
-  }
-
-  return (
-    <Routes>
-      {
-
-        (status === 'not-authenticated')
-          ? (
-            <>
-            <Route path='/auth/*' element={<LoginPage />} />
-            <Route path='/*' element={<Navigate to='/auth/login' />} />
-            </>
-          )
-          : (
-            <>
-               <Route path='/' element={<CalendarPage />} />
-            <Route path='/*' element={<Navigate to='/' />} />
-            </>
-          )
-      }
-
-
-
-      <Route path='/*' element={<Navigate to='/auth/login' />} />
-    </Routes>
-  )
 }
