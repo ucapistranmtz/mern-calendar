@@ -1,7 +1,7 @@
 
 
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import enUS from 'date-fns/locale/en-US'
 import { Navbar, CalendarEvent, CalendarModal, FabAddNew, FabDelete } from '../'
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
@@ -14,11 +14,11 @@ import { useUiStore, useCalendarStore, } from '../../hooks'
 
 
 
- 
+
 export const CalendarPage = () => {
 
   const { openDateModal, onCloseDateModal } = useUiStore();
-  const { events, setActiveEvent } = useCalendarStore();
+  const { events, setActiveEvent, startLoadingEvents } = useCalendarStore();
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
   const eventStyleGetter = (event, stsart, end, isSelected) => {
@@ -35,7 +35,7 @@ export const CalendarPage = () => {
 
 
   const onDoubleClick = (event) => {
-  //  console.log({ onDoubleClick: event })
+    //  console.log({ onDoubleClick: event })
     openDateModal();
   }
 
@@ -48,6 +48,12 @@ export const CalendarPage = () => {
     localStorage.setItem('lastView', event);
     setLastView(event)
   }
+
+
+  useEffect(() => {
+    startLoadingEvents() ;
+  }, [])
+
   return (
     <>
 
@@ -60,7 +66,7 @@ export const CalendarPage = () => {
         startAccessor="start"
         endAccessor="end"
         style={{ height: 'calc(100vh - 80px)' }}
-       // messages={getMessagesES()}
+        // messages={getMessagesES()}
         eventPropGetter={eventStyleGetter}
         components={{
           event: CalendarEvent
@@ -71,8 +77,8 @@ export const CalendarPage = () => {
 
       />
       <CalendarModal />
-      <FabAddNew/>
-      <FabDelete/>
+      <FabAddNew />
+      <FabDelete />
     </>
   )
 }
