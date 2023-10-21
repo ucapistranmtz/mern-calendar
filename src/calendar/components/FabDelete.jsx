@@ -7,10 +7,10 @@ export const FabDelete = () => {
 
 
 
-    const { startDeletingEcent,hasEventSelected } = useCalendarStore()
+    const {  startDeletingEvent,hasEventSelected } = useCalendarStore()
 
     const handleDelete = () => {
-        startDeletingEcent();
+        startDeletingEvent();
 
     }
 
