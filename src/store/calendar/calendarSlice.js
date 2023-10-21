@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addHours } from 'date-fns';
+//import { addHours } from 'date-fns';
 import { getMessagesES, localizer, } from '../../helpers'
 
-const tempEvent = {
+/* const tempEvent = {
   _id: new Date().getTime,
   title: 'birthday',
   start: new Date(),
@@ -13,14 +13,17 @@ const tempEvent = {
     name: 'Ulises'
   }
 }
-
+ */
 
 
 
 export const calendarSlice = createSlice({
   name: 'calendar',
   initialState: {
-    events: [tempEvent],
+    isLoadingEvents: true,
+    events: [
+      //  tempEvent
+    ],
     activeEvent: null
   },
   reducers: {
@@ -34,7 +37,7 @@ export const calendarSlice = createSlice({
     onUpdateEvent: (state, { payload }) => {
 
       state.events = state.events.map(item => {
-        if (item._id === payload._id) {
+        if (item.id === payload.id) {
           return payload
         }
         return item
@@ -43,9 +46,21 @@ export const calendarSlice = createSlice({
     },
     onDeleteEvent: (state) => {
       if (state.activeEvent) {
-        state.events = state.events.filter(event => event._id != state.activeEvent._id);
+        state.events = state.events.filter(event => event.id != state.activeEvent.id);
         state.activeEvent = null
       }
+    },
+    onLoadEvents: (state, { payload = [] }) => {
+      state.isLoadingEvents = false;
+      // state.events = payload;
+      payload.forEach(event => {
+        const exist = state.events.some(dbEvent => dbEvent.id === event.id)
+        if (!exist) {
+          state.events.push(event)
+        }
+
+      })
+
 
     }
   }
@@ -53,4 +68,4 @@ export const calendarSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent } = calendarSlice.actions;
+export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent,onLoadEvents } = calendarSlice.actions;

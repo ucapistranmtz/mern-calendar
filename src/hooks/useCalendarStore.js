@@ -1,8 +1,9 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { onAddNewEvent, onDeleteEvent, onSetActiveEvent, onUpdateEvent } from "../store/calendar/calendarSlice";
+import { onAddNewEvent, onDeleteEvent, onSetActiveEvent, onUpdateEvent, onLoadEvents } from "../store/calendar/calendarSlice";
 import { calendarApi } from "../api";
 import { convertEventsToDateEvents } from "../helpers";
+import Swal from "sweetalert2";
 
 
 
@@ -24,14 +25,23 @@ export const useCalendarStore = () => {
         //TODO: backend call 
 
         //!all ok 
-        if (calendarEvent._id) {
-            //updating
-            dispatch(onUpdateEvent({ ...calendarEvent }))
+        if (calendarEvent.id) {
+
+            try {
+                //updating
+                const { data } = calendarApi.put(`events/${calendarEvent.id}`, calendarEvent);
+                console.log('updating event',data)
+                dispatch(onUpdateEvent({ ...calendarEvent, user }))
+            } catch (error) {
+                console.error(error);
+                Swal.fire('Error while updating the event', error.response.data.msg, 'error')
+            }
+
         } else {
             // new 
             const { data } = await calendarApi.post('/events', calendarEvent);
             console.log('new event', data)
-            dispatch(onAddNewEvent({ ...calendarEvent, _id: data.event.id, user }))
+            dispatch(onAddNewEvent({ ...calendarEvent, id: data.event.id, user }))
         }
 
     }
@@ -44,19 +54,20 @@ export const useCalendarStore = () => {
         dispatch(onDeleteEvent())
     }
 
-    const startLoadingEvents = async() => {
+    const startLoadingEvents = async () => {
 
         try {
 
-            const { data } = await calendarApi.get('/events');
-            const events =convertEventsToDateEvents(data.events);
-            console.log('eventsd',events)
+            const { data } = await calendarApi.get('/events');  
+            const events = convertEventsToDateEvents(data.events);
+      
+            dispatch(onLoadEvents(events))
         } catch (error) {
             console.error('loading events error', error)
         }
     }
 
-  
+
 
     return {
         //*properties

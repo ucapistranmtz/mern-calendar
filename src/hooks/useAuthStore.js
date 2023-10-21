@@ -48,6 +48,7 @@ export const useAuthStore = () => {
     }
 
 
+ 
     const checkAuthToken = async () => {
 
         const token = localStorage.getItem('token');
@@ -72,8 +73,12 @@ export const useAuthStore = () => {
     const startLogOut = () => {
 
         localStorage.clear();
+        //dispatch(onLogoutCalendar() );
         dispatch(onLogout());
     }
+
+ 
+
 
     return {
         //*properties
