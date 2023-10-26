@@ -30,7 +30,7 @@ export const useCalendarStore = () => {
             try {
                 //updating
                 const { data } = calendarApi.put(`events/${calendarEvent.id}`, calendarEvent);
-                console.log('updating event',data)
+             //   console.log('updating event',data)
                 dispatch(onUpdateEvent({ ...calendarEvent, user }))
             } catch (error) {
                 console.error(error);
@@ -40,7 +40,7 @@ export const useCalendarStore = () => {
         } else {
             // new 
             const { data } = await calendarApi.post('/events', calendarEvent);
-            console.log('new event', data)
+          //  console.log('new event', data)
             dispatch(onAddNewEvent({ ...calendarEvent, id: data.event.id, user }))
         }
 

@@ -45,7 +45,7 @@ export const CalendarPage = () => {
   }
 
   const onSelect = (event) => {
-    console.log({ onSelect: event })
+    //console.log({ onSelect: event })
     setActiveEvent(event);
   }
 
